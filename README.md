@@ -1,9 +1,13 @@
-#AWS自動排程專案#
-##目標：建立一套自動爬蟲系統##
+#AWS自動排程專案
+
+##目標：建立一套自動爬蟲系統
+
 ##方式：CloudWatch設定時間條件，觸發Lambda執行函式，對EC2執行個體做開關機的動作，並利用Crontab設定執行個體內執行排程，將爬取的資料存入RDS資料庫
+
 ##使用AWS服務：EC2、Lambda、CloudWatch、IAM、RDS
 
 ###步驟一、建立RDS資料庫
+
 1.	開啟RDS服務
 2.	點擊左方列表"資料庫"
 3.	點選右方按鈕"建立資料庫"
@@ -15,6 +19,7 @@
 9.	可以透過MySQL的WorkBench連線到資料庫內
 
 ###步驟二、建立EC2執行個體
+
 1.	開啟EC2服務
 2.	點選左列"執行個體"
 3.	點擊右方按鈕"啟動新執行個體"，這邊我創建的是一台Ubuntu的Server
@@ -25,6 +30,7 @@
 8.	可透過SSH連線到執行個體內，並透過scp指令將爬蟲檔案傳入虛擬機內，再使用crontab -e指令編輯cron的設定檔設定自動執行排程
 
 ###步驟三、建立IAM角色
+
 1.	開啟IAM服務
 2.	點選左列"角色"
 3.	點選右方"建立角色"
@@ -58,6 +64,7 @@
 8.回到"選擇政策"頁面，選擇剛剛建立的政策並完成建立角色
 
 ###步驟四、建立關機Lambda函式
+
 1.	開啟Lambda服務
 2.	點選左方"函數"，並點擊右方"建立函式"按鈕
 3.	選擇"從頭開始撰寫"
@@ -73,6 +80,7 @@ def lambda_handler(event, context):
     print('stopped your instances: ' + str(instances))
 
 ###步驟五、建立CloudWatch事件
+
 1.	在步驟四建立的"函式概觀"內，點選"新增觸發"
 2.	選取"EventBridge(CloudWatch事件)"
 3.	規則區塊點選"建立新規則"，取一個可識別的名稱
@@ -80,6 +88,7 @@ def lambda_handler(event, context):
 5.	完成即可建立觸發條件
 
 ###步驟六、建立開機Lambda函式
+
 1.	依照步驟四及步驟五順序建立開機函式
 2.	需要注意的是程式碼中ec2.stop_instances(InstanceIds=instances)這行需改為ec2.start_instances(InstanceIds=instances)
 3.	CloudWatch開機時間需略早於步驟二中設定的執行時間，讓虛擬機有時間可以開啟
