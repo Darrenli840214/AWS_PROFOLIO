@@ -68,6 +68,8 @@
 4.	取一個可以識別函式的名稱，執行時間選擇 Python 3.7
 5.	"變更預設執行角色"區塊選擇步驟三建立的角色，就可以點選"建立函式"
 6.	建立完成後，往下可看到Lambda函式區塊，貼上以下程式碼後點選Deploy
+
+```python
 import boto3
 region = 'us-west-1' →改成你使用的區域
 instances = ['i-12345cb6de4f78g9h', 'i-08ce9b2d7eccf6d26']　→設定你想關機的EC2執行個體ID，可以到EC2執行個體介面找到ID，需使用陣列定義
@@ -75,6 +77,7 @@ ec2 = boto3.client('ec2', region_name=region)
 def lambda_handler(event, context):
     ec2.stop_instances(InstanceIds=instances)
     print('stopped your instances: ' + str(instances))
+```
 
 #### 步驟五、建立CloudWatch事件
 1.	在步驟四建立的"函式概觀"內，點選"新增觸發"
