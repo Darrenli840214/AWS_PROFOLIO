@@ -90,4 +90,5 @@ def lambda_handler(event, context):
 1.	依照步驟四及步驟五順序建立開機函式
 2.	需要注意的是程式碼中ec2.stop_instances(InstanceIds=instances)這行需改為ec2.start_instances(InstanceIds=instances)
 3.	CloudWatch開機時間需略早於步驟二中設定的執行時間，讓虛擬機有時間可以開啟  
+
 操作完成以上步驟即可擁有一套每日自動更新的資料庫
